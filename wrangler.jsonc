@@ -1,0 +1,10 @@
+{
+  // Marsad Finance — static site served by Cloudflare Workers Assets.
+  // No build step: the repo root IS the output directory.
+  "name": "marsad",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page"
+  }
+}
