@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --canvas:#F3F0E8; --surface:#FBF9F3; --sunken:#EAE6DA; --hairline:#E0DBCC;
+  --canvas:#F1EEE5; --surface:#FDFBF6; --sunken:#E7E2D3; --hairline:#D2CAB4;
   --ink:#23201A; --ink2:#6C675A; --ink3:#A29C8C;
   --gold:#D4AF37; --gold-dark:#8A6D1D; --blue:#0052CC; --tertiary:#97B0FF;
   --gain:#188A42; --gain-line:#23A55A; --loss:#D4373E; --loss-line:#E5484D;
@@ -17,7 +17,7 @@
   --shadow:0 10px 30px rgba(35,32,26,.12);
 }
 html[data-theme="dark"]{
-  --canvas:#17150F; --surface:#1E1B14; --sunken:#272317; --hairline:#35301F;
+  --canvas:#141209; --surface:#1E1B13; --sunken:#272216; --hairline:#423A26;
   --ink:#F2EFE6; --ink2:#A9A493; --ink3:#6E6A5C;
   --gold-dark:#D4AF37; --blue:#6B96FF;
   --gain:#30B860; --gain-line:#30B860; --loss:#F2555C; --loss-line:#F2555C;
@@ -41,15 +41,16 @@ svg.ic{width:1em;height:1em;flex-shrink:0;vertical-align:-0.12em}
 .hdr-in{display:flex;align-items:center;gap:10px;padding:12px 0}
 .hdr .brand{display:flex;align-items:center;gap:9px;flex:1}
 .hdr .ttl{font-size:20px;font-weight:800;letter-spacing:-.2px}
-.icon-btn{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+.icon-btn{width:38px;height:38px;border-radius:8px;border:1px solid transparent;display:flex;align-items:center;justify-content:center;
   color:var(--ink2);font-size:18px;transition:background .15s;border:1px solid transparent}
 .icon-btn:hover{background:var(--sunken);border-color:var(--hairline)}
 main{flex:1;padding-bottom:110px}
 .view{display:none;animation:vin .22s ease-out}
 .view.on{display:block}
 @keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-.card{background:var(--surface);border:1px solid var(--hairline);border-radius:16px}
-.sec-h{display:flex;align-items:center;justify-content:space-between;margin:20px 2px 8px}
+.card{background:var(--surface);border:1px solid var(--hairline);border-radius:10px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin:22px 0 9px;
+  padding-bottom:7px;border-bottom:1px solid var(--hairline)}
 .sec-h b{font-size:16px;font-weight:800}
 .sec-h .lnk{font-size:12.5px;font-weight:700;color:var(--gold-dark);cursor:pointer}
 .cap{font-size:11.5px;color:var(--ink3);line-height:1.55}
@@ -58,12 +59,12 @@ main{flex:1;padding-bottom:110px}
 .hcol{min-width:0}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px;flex-wrap:wrap}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;padding:7px 15px;border-radius:99px;font-size:12.5px;font-weight:700;
+.chip{flex-shrink:0;padding:7px 14px;border-radius:7px;font-size:12.5px;font-weight:700;
   background:var(--surface);border:1px solid var(--hairline);color:var(--ink);cursor:pointer;transition:all .15s}
 .chip:hover{border-color:var(--gold-dark)}
 .chip.on{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff}
 .dchip{display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:800;
-  padding:2px 8px;border-radius:7px;font-variant-numeric:tabular-nums}
+  padding:2px 7px;border-radius:5px;border:1px solid currentColor;font-variant-numeric:tabular-nums}
 .dchip.up{color:var(--gain);background:color-mix(in srgb,var(--gain) 12%,transparent)}
 .dchip.dn{color:var(--loss);background:color-mix(in srgb,var(--loss) 12%,transparent)}
 .dchip.na{color:var(--ink3)}
@@ -72,10 +73,10 @@ main{flex:1;padding-bottom:110px}
 @media(max-width:520px){.hero .hero-v{font-size:36px}}
 .mv3{display:flex;gap:20px;margin-top:12px}
 .mv3 .k{font-size:11px;color:var(--ink3);margin-bottom:2px}
-.goldcard{background:var(--gold-dark);border-radius:16px;padding:18px;color:#fff;cursor:pointer;transition:transform .15s}
+.goldcard{background:var(--gold-dark);border-radius:10px;border:1px solid rgba(0,0,0,.18);padding:18px;color:#fff;cursor:pointer;transition:transform .15s}
 .goldcard:active{transform:scale(.985)}
 .goldcard .t{font-size:12.5px;font-weight:700;opacity:.75;margin-bottom:10px}
-.gpill{display:inline-block;background:rgba(255,255,255,.16);border-radius:99px;padding:8px 14px;
+.gpill{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:7px;padding:8px 14px;
   font-size:13.5px;font-weight:800;font-variant-numeric:tabular-nums}
 .row{display:flex;align-items:center;gap:12px;padding:12px 15px;cursor:pointer;transition:background .12s}
 .row:hover{background:var(--sunken)}
@@ -89,14 +90,14 @@ main{flex:1;padding-bottom:110px}
 .star{font-size:15px;color:var(--ink3);padding:4px;cursor:pointer;flex-shrink:0}
 .star.on{color:var(--gold)}
 .tiles{display:flex;gap:8px}
-.tile{flex:1;background:var(--surface);border:1px solid var(--hairline);border-radius:14px;padding:12px}
+.tile{flex:1;background:var(--surface);border:1px solid var(--hairline);border-radius:9px;padding:12px}
 .tile .k{font-size:10.5px;color:var(--ink2)}
 .tile .v{font-size:15.5px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}
 .tile .y{font-size:9.5px;color:var(--ink3)}
 .ngrid{display:grid;gap:12px;margin-top:10px}
 @media(min-width:760px){.ngrid{grid-template-columns:1fr 1fr}}
 @media(min-width:1040px){.ngrid{grid-template-columns:1fr 1fr 1fr}}
-.ncard{display:block;background:var(--surface);border:1px solid var(--hairline);border-radius:16px;
+.ncard{display:block;background:var(--surface);border:1px solid var(--hairline);border-radius:10px;
   overflow:hidden;cursor:pointer;transition:transform .12s,box-shadow .2s}
 .ncard:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
 .ncard.wide{grid-column:1/-1}
@@ -124,10 +125,11 @@ main{flex:1;padding-bottom:110px}
   padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
 @media(min-width:700px){
   #tabbar{left:50%;right:auto;transform:translateX(-50%);bottom:18px;border:1px solid var(--hairline);
-    border-radius:99px;padding:8px 10px;box-shadow:var(--shadow);gap:4px}}
+    border-radius:10px;padding:7px 8px;box-shadow:var(--shadow);gap:4px}}
 .tab{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;min-width:86px}
-@media(min-width:700px){.tab{flex-direction:row;gap:8px;padding:9px 20px;border-radius:99px;min-width:0}}
-.tab .ic{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+@media(min-width:700px){.tab{flex-direction:row;gap:8px;padding:9px 18px;border-radius:8px;min-width:0}}
+
+.tab .ic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
   font-size:17px;color:var(--ink3);transition:all .2s}
 @media(min-width:700px){.tab .ic{width:auto;height:auto;border-radius:0;background:none!important}}
 .tab .lb{font-size:10.5px;font-weight:800;color:var(--ink3)}
@@ -141,20 +143,20 @@ main{flex:1;padding-bottom:110px}
 .cline .amt{flex:1;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;min-width:0;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cursel{display:flex;align-items:center;gap:6px;background:var(--sunken);border:1px solid var(--hairline);
-  border-radius:11px;padding:9px 13px;cursor:pointer;font-weight:800;font-size:13.5px;flex-shrink:0}
+  border-radius:8px;padding:9px 13px;cursor:pointer;font-weight:800;font-size:13.5px;flex-shrink:0}
 .swapline{display:flex;align-items:center;margin:10px 0}
 .swapline .l{flex:1;height:1px;background:var(--hairline)}
 .swapbtn{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#fff;display:flex;
   align-items:center;justify-content:center;font-size:17px;margin:0 10px;cursor:pointer}
-#keypad{margin-top:12px;background:var(--surface);border:1px solid var(--hairline);border-radius:16px;padding:6px}
+#keypad{margin-top:12px;background:var(--surface);border:1px solid var(--hairline);border-radius:10px;padding:6px}
 #keypad .krow{display:flex}
-#keypad button{flex:1;padding:14px 0;font-size:20px;font-weight:600;border-radius:10px;font-variant-numeric:tabular-nums}
+#keypad button{flex:1;margin:3px;padding:13px 0;font-size:20px;font-weight:600;border:1px solid var(--hairline);border-radius:8px;background:var(--canvas);font-variant-numeric:tabular-nums}
 #keypad button:hover{background:var(--sunken)}
-.seg{display:flex;background:var(--sunken);border-radius:12px;padding:3px}
+.seg{display:flex;background:var(--sunken);border:1px solid var(--hairline);border-radius:9px;padding:3px}
 .seg button{flex:1;padding:8px 0;border-radius:9px;font-size:13px;font-weight:700;color:var(--ink3);transition:all .15s}
-.seg button.on{background:var(--surface);color:var(--ink);border:1px solid var(--hairline)}
+.seg button.on{background:var(--surface);color:var(--ink);border:1px solid var(--hairline);border-radius:7px}
 .btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;
-  border-radius:12px;font-size:14px;font-weight:700;transition:transform .12s}
+  border-radius:8px;font-size:14px;font-weight:700;transition:transform .12s}
 .btn:active{transform:scale(.98)}
 .btn.p{background:var(--gold-dark);color:#fff}
 .btn.o{border:1px solid var(--hairline);color:var(--ink)}
@@ -162,35 +164,35 @@ main{flex:1;padding-bottom:110px}
   flex-direction:column;overflow-y:auto;opacity:0;transition:opacity .2s}
 #scr-detail.on{display:flex;opacity:1}
 #scr-detail .wrap{max-width:880px}
-.chartbox{position:relative;background:var(--surface);border:1px solid var(--hairline);border-radius:16px;direction:ltr}
+.chartbox{position:relative;background:var(--surface);border:1px solid var(--hairline);border-radius:10px;direction:ltr}
 #chart{width:100%;height:340px;display:block;touch-action:none;cursor:crosshair}
 #legend{position:absolute;top:10px;left:14px;font-size:12px;color:var(--ink2);
   pointer-events:none;font-variant-numeric:tabular-nums;direction:ltr;text-align:left}
 #legend .l1{font-weight:800;color:var(--ink)}
 #chart-note{font-size:10.5px;color:var(--ink3);padding:5px 4px 0}
 #nohist{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;
-  justify-content:center;gap:8px;padding:22px;text-align:center;background:var(--surface);border-radius:16px}
+  justify-content:center;gap:8px;padding:22px;text-align:center;background:var(--surface);border-radius:10px}
 #nohist.on{display:flex}
 .cmp-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;
-  padding:6px 11px;border-radius:99px;border:1px solid var(--hairline);background:var(--surface);cursor:pointer;margin:3px 2px}
+  padding:6px 10px;border-radius:7px;border:1px solid var(--hairline);background:var(--surface);cursor:pointer;margin:3px 2px}
 .cmp-chip.off{opacity:.4}
 .cmp-dot{width:8px;height:8px;border-radius:50%}
 #dim{position:fixed;inset:0;background:rgba(20,17,10,.45);opacity:0;pointer-events:none;transition:opacity .25s;z-index:70}
 #dim.on{opacity:1;pointer-events:auto}
 #sheet{position:fixed;z-index:80;background:var(--surface);display:flex;flex-direction:column;box-shadow:var(--shadow);
-  left:0;right:0;bottom:0;max-height:85%;border-radius:20px 20px 0 0;
+  left:0;right:0;bottom:0;max-height:85%;border-radius:12px 12px 0 0;border-top:1px solid var(--hairline);
   transform:translateY(105%);transition:transform .3s cubic-bezier(.32,.72,.28,1)}
 @media(min-width:700px){#sheet{left:50%;right:auto;top:50%;bottom:auto;width:440px;max-height:80vh;
-  border-radius:18px;transform:translate(-50%,-46%) scale(.97);opacity:0;border:1px solid var(--hairline)}}
+  border-radius:10px;transform:translate(-50%,-46%) scale(.97);opacity:0;border:1px solid var(--hairline)}}
 #sheet.on{transform:translateY(0)}
 @media(min-width:700px){#sheet.on{transform:translate(-50%,-50%) scale(1);opacity:1}}
 .sheet-h{display:flex;align-items:center;padding:16px 18px 4px}
 .sheet-h b{flex:1;font-size:16.5px;font-weight:800}
 .sheet-b{overflow-y:auto;padding:8px 18px 24px;scrollbar-width:none}
-.srch{width:100%;background:var(--sunken);border:1px solid var(--hairline);border-radius:11px;
+.srch{width:100%;background:var(--sunken);border:1px solid var(--hairline);border-radius:8px;
   padding:12px 14px;font-size:14px;outline:none;margin-bottom:8px}
 #toast{position:fixed;bottom:104px;left:50%;transform:translate(-50%,14px);background:var(--ink);
-  color:var(--canvas);font-size:12.5px;font-weight:700;padding:10px 17px;border-radius:10px;opacity:0;
+  color:var(--canvas);font-size:12.5px;font-weight:700;padding:10px 17px;border-radius:7px;opacity:0;
   transition:all .25s;z-index:90;pointer-events:none;white-space:nowrap}
 #toast.on{opacity:1;transform:translate(-50%,0)}
 .full{position:fixed;inset:0;background:var(--canvas);z-index:100;display:none;
@@ -203,7 +205,8 @@ main{flex:1;padding-bottom:110px}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 mark{background:color-mix(in srgb,var(--gold) 25%,transparent);color:inherit;border-radius:3px}
 .empt{text-align:center;padding:38px 22px}
-.empt .ic{width:92px;height:92px;border-radius:50%;background:var(--sunken);display:flex;
+
+.empt .ic{width:92px;height:92px;border-radius:14px;border:1px solid var(--hairline);background:var(--sunken);display:flex;
   align-items:center;justify-content:center;font-size:38px;margin:0 auto 14px;color:var(--ink3)}
 </style>
 </head>
@@ -259,7 +262,7 @@ const I18N={
   onb_l:"اختر لغتك",cont:"متابعة",
   t_home:"الرئيسية",t_markets:"الأسواق",t_convert:"تحويل",t_news:"الأخبار",t_watch:"المتابعة",
   search:"بحث",settings:"الإعدادات",search_hint:"ابحث بالاسم أو الرمز أو الدولة — مثال: ليبيا",
-  no_res:"لا توجد نتائج — جرّب LYD أو «دينار»",fav:"المفضلة",recent:"الأخيرة",allcur:"كل العملات",
+  no_res:"لا توجد نتائج — جرّب LYD أو «دينار»",fav:"المفضلة",recent:"الأخيرة",allcur:"كل العملات",assets:"معادن وعملات رقمية",
   hero:"سعر صرف الدولار مقابل الدينار الليبي",official:"السعر الرسمي",
   par:"السوق الموازي (تقديري)",par_est:"تقدير غير رسمي",gap:"الفارق",
   par_none:"سعر السوق الموازي غير منشور حالياً. لا نعرض أرقاماً غير مؤكدة.",
@@ -296,7 +299,7 @@ const I18N={
   onb_l:"Choose your language",cont:"Continue",
   t_home:"Home",t_markets:"Markets",t_convert:"Convert",t_news:"News",t_watch:"Watchlist",
   search:"Search",settings:"Settings",search_hint:"Search name, code, or country — e.g. Libya",
-  no_res:"No results — try LYD or “dinar”",fav:"Favorites",recent:"Recent",allcur:"All currencies",
+  no_res:"No results — try LYD or “dinar”",fav:"Favorites",recent:"Recent",allcur:"All currencies",assets:"Metals & crypto",
   hero:"US Dollar to Libyan Dinar",official:"Official rate",
   par:"Parallel market (estimate)",par_est:"Unofficial estimate",gap:"Difference",
   par_none:"The parallel-market rate isn't published right now. We don't show unverified numbers.",
@@ -335,8 +338,8 @@ const isAr=()=>State.lang==="ar";
 const State={
   lang:"ar",theme:"light",onboarded:false,tab:"home",
   pair:["USD","LYD"],range:"1Y",compare:false,heroRange:"1M",
-  watchlist:[["USD","LYD"],["EUR","LYD"],["TND","LYD"],["USD","EUR"]],
-  favs:["LYD","USD","EUR","TND","EGP"],recents:[],bookmarks:[],alerts:[],convRecents:[],
+  watchlist:[["USD","LYD"],["EUR","LYD"],["XAU","USD"],["BTC","USD"]],
+  favs:["LYD","USD","EUR","XAU","BTC"],recents:[],bookmarks:[],alerts:[],convRecents:[],
   home:"LYD",newsCat:null,watchTab:0,
 };
 const AR_META={
@@ -363,7 +366,14 @@ const AR_META={
  CZK:["كورونا تشيكية",["التشيك"]],HUF:["فورنت مجري",["المجر"]],RON:["ليو روماني",["رومانيا"]],
  ISK:["كرونة آيسلندية",["آيسلندا"]],RSD:["دينار صربي",["صربيا"]],BGN:["ليف بلغاري",["بلغاريا"]],
  GEL:["لاري جورجي",["جورجيا"]],KZT:["تينغ كازاخستاني",["كازاخستان"]],ILS:["شيكل",[]],
+ XAU:["الذهب (للأونصة)",["ذهب","معادن ثمينة"]],XAG:["الفضة (للأونصة)",["فضة","معادن ثمينة"]],
+ BTC:["بيتكوين",["عملة رقمية","كريبتو"]],ETH:["إيثيريوم",["عملة رقمية","كريبتو"]],
 };
+/* Metals and crypto. Priced per troy ounce (XAU/XAG) or per coin (BTC/ETH), so
+   they are always quoted ASSET → currency — "1 oz gold = $3,315" — rather than
+   the inverse, which would read 0.0003 and mean nothing to anyone. */
+const ASSETS=["XAU","XAG","BTC","ETH"];
+const isAsset=c=>ASSETS.includes(c);
 const MENA=["LYD","TND","DZD","MAD","EGP","SAR","AED","QAR","KWD","BHD","OMR","JOD","IQD","LBP","SYP","YER","SDG","MRU","TRY","ILS","IRR"];
 function logoSVG(s=76){return`<svg width="${s}" height="${s}" viewBox="0 0 100 100" fill="none" stroke="var(--gold)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
  <path d="M14 54a36 36 0 0 1 72 0"/><path d="M14 54v30h72V54"/>
@@ -412,6 +422,10 @@ const META={
  AZN:{n:"Azerbaijani Manat",f:"🇦🇿",c:["Azerbaijan"]},MNT:{n:"Mongolian Tögrög",f:"🇲🇳",c:["Mongolia"]},
  NPR:{n:"Nepalese Rupee",f:"🇳🇵",c:["Nepal"]},AFN:{n:"Afghan Afghani",f:"🇦🇫",c:["Afghanistan"]},
  IRR:{n:"Iranian Rial",f:"🇮🇷",c:["Iran"]},BGN:{n:"Bulgarian Lev",f:"🇧🇬",c:["Bulgaria"]},
+ XAU:{n:"Gold (per ounce)",f:"◆",c:["Gold","Precious metals","Bullion"]},
+ XAG:{n:"Silver (per ounce)",f:"◇",c:["Silver","Precious metals","Bullion"]},
+ BTC:{n:"Bitcoin",f:"₿",c:["Crypto","Cryptocurrency"]},
+ ETH:{n:"Ethereum",f:"Ξ",c:["Crypto","Cryptocurrency"]},
 };
 /* every API currency is listed even without curated metadata */
 
@@ -426,10 +440,12 @@ const Registry={
   codes:[...new Set([...["EUR",...Object.keys(SNAPSHOT.latest)],...Object.keys(EXT.rates)])].sort(),
   update(){ // recompute after live fetches — new provider currencies appear automatically.
     // Fiat gate: a code must exist in a fiat-only provider (ECB or the Exchange
-    // Rate API); this excludes the CDN provider's crypto tickers without any
-    // hardcoded list. New fiats added by providers appear here automatically.
+    // Rate API). That keeps the CDN dataset's hundreds of crypto tickers out of
+    // the list — except the four assets in ASSETS, which we support deliberately.
     const fiat=new Set(["EUR",...Object.keys(Data.extUSD||{}),...Object.keys(Data.latestEUR||{})]);
-    ALL_CODES=Registry.codes=[...fiat].filter(c=>/^[A-Z]{3}$/.test(c)).sort();
+    const extra=ASSETS.filter(c=>Data.cdnLatest&&Data.cdnLatest.table&&Data.cdnLatest.table[c]);
+    ALL_CODES=Registry.codes=[...new Set([
+      ...[...fiat].filter(c=>/^[A-Z]{3}$/.test(c)),...extra])].sort();
   },
   touchRecent(c){const r=State.recents.filter(x=>x!==c);r.unshift(c);State.recents=r.slice(0,6);Store.save()},
 };
@@ -517,7 +533,15 @@ function animNum(el,to,fmtFn){
 }
 const dp=(a,b)=>{const r=Data.rate(a,b);return r>=100?2:r>=10?3:4}; // natural precision
 const fmt=(v,d)=>v==null?"—":v.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
-const fmtRate=(v,a,b)=>fmt(v,v>=100?2:v>=10?3:4);
+const fmtRate=(v,a,b)=>{
+  if(v==null)return"—";
+  const x=Math.abs(v);
+  if(x>=100)return fmt(v,2);           // gold, BTC, JPY-style
+  if(x>=10)return fmt(v,3);
+  if(x>=0.01)return fmt(v,4);
+  if(x>=0.0001)return fmt(v,6);        // small crosses
+  return fmt(v,8);                     // 1 USD expressed in BTC
+};
 const pctS=v=>v==null?"—":(v>0?"+":"")+v.toFixed(2)+"%";
 const dstr=iso=>{const[y,m,d]=iso.split("-");return new Date(Date.UTC(+y,+m-1,+d)).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})};
 const isoAdd=(iso,days)=>{const d=new Date(iso+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+days);return d.toISOString().slice(0,10)};
@@ -1023,9 +1047,10 @@ const Picker={
     else{
       const favs=State.favs.filter(c=>ALL_CODES.includes(c));
       const rec=State.recents.filter(c=>ALL_CODES.includes(c)&&!favs.includes(c));
-      const rest=ALL_CODES.filter(c=>!favs.includes(c)&&!rec.includes(c));
+      const assets=ASSETS.filter(c=>ALL_CODES.includes(c)&&!favs.includes(c)&&!rec.includes(c));
+      const rest=ALL_CODES.filter(c=>!favs.includes(c)&&!rec.includes(c)&&!isAsset(c));
       const sec=(k,arr)=>arr.length?`<div class="cap" style="font-weight:800;margin:10px 2px 4px;text-transform:uppercase">${T(k)}</div>${arr.map(c=>this.row(c,"")).join("")}`:"";
-      html=sec("fav",favs)+sec("recent",rec)+sec("allcur",rest);}
+      html=sec("fav",favs)+sec("recent",rec)+sec("assets",assets)+sec("allcur",rest);}
     $("pk-list").innerHTML=html;},
   pick(c){Registry.touchRecent(c);const r=this._res;this._res=null;Sheet.close();r&&r(c)},
   fav(c){const i=State.favs.indexOf(c);i>=0?State.favs.splice(i,1):State.favs.unshift(c);
@@ -1101,7 +1126,6 @@ const Home={
     const r=Data.rate("USD","LYD"),d=Data.dayDelta("USD","LYD"),w=Data.nDayDelta("USD","LYD",5);
     const hv=Home.heroSeries&&Home.heroSeries.values;
     const m=hv&&hv.length>1?(hv[hv.length-1]/hv[0]-1)*100:null;
-    const news=News.items.filter(n=>n.cat==="n_libya"||n.cat==="n_oil"||n.cat==="n_cur").slice(0,4);
     return`<div class="hgrid">
     <div class="hcol">
       <div class="card hero" style="padding:18px;cursor:pointer" onclick="Detail.open('USD','LYD')">
@@ -1119,8 +1143,6 @@ const Home={
           ${["1M","3M","6M"].map(k=>`<button class="chip ${State.heroRange===k?"on":""}" onclick="State.heroRange='${k}';Home.loadHero()">${k}</button>`).join("")}</div>
       </div>
       ${Parallel.card(r)}
-      ${news.length?`<div class="sec-h"><b>${T("news")}</b><span class="lnk" onclick="App.go('news')">${T("view_all")}</span></div>
-        <div class="ngrid" style="grid-template-columns:1fr">${news.map(n=>News.card(n)).join("")}</div>`:""}
     </div>
     <div class="hcol">
       <div class="goldcard" onclick="App.go('convert')">
@@ -1572,7 +1594,10 @@ const App={
     renderChrome();render(tab);window.scrollTo({top:0});},
   async search(){const c=await Picker.open(T("search"));
     if(!c)return;
-    if(c==="LYD")Detail.open("USD","LYD");else Detail.open(c,"LYD");},
+    // metals/crypto read naturally as ASSET → USD (1 oz gold = $3,315)
+    if(isAsset(c))Detail.open(c,"USD");
+    else if(c==="LYD")Detail.open("USD","LYD");
+    else Detail.open(c,"LYD");},
   settings(){Sheet.open(T("settings"),`
     <div class="cap" style="font-weight:700">${T("lang")}</div>
     <div class="seg" style="margin:6px 0 14px">
