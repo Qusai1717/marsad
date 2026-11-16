@@ -1119,8 +1119,11 @@ function renderChrome(){
 const Home={
   heroSeries:null,parallel:null,inds:null,
   async loadHero(){
-    const days={"1M":31,"3M":92,"6M":183}[State.heroRange]||31;
-    const s=await Data.series("USD","LYD",isoAdd(Data.latestDate||"2026-01-01",-days));
+    // null = MAX: ask from well before any provider's first snapshot and let
+    // the data layer clamp to whatever history actually exists for this pair.
+    const days={"1M":31,"3M":92,"6M":183,"1Y":366,"5Y":1827,"MAX":null}[State.heroRange];
+    const from=days==null?"1990-01-01":isoAdd(Data.latestDate||"2026-01-01",-days);
+    const s=await Data.series("USD","LYD",from);
     Home.heroSeries=s.dates.length?s:null;render("home");},
   render(){
     const r=Data.rate("USD","LYD"),d=Data.dayDelta("USD","LYD"),w=Data.nDayDelta("USD","LYD",5);
@@ -1140,7 +1143,7 @@ const Home={
           <div><div class="k">${T("m1")}</div>${dchip(m)}</div></div>
         <div style="margin-top:12px">${Home.heroSeries?heroChart(Home.heroSeries):`<div class="skel" style="height:170px"></div>`}</div>
         <div class="chips" style="margin-top:10px" onclick="event.stopPropagation()">
-          ${["1M","3M","6M"].map(k=>`<button class="chip ${State.heroRange===k?"on":""}" onclick="State.heroRange='${k}';Home.loadHero()">${k}</button>`).join("")}</div>
+          ${["1M","3M","6M","1Y","5Y","MAX"].map(k=>`<button class="chip ${State.heroRange===k?"on":""}" onclick="State.heroRange='${k}';Home.loadHero()">${k}</button>`).join("")}</div>
       </div>
       ${Parallel.card(r)}
     </div>
