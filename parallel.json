@@ -1,7 +1,7 @@
 {
   "_readme": "Marsad parallel (black) market rate. Edit usdLyd, updated and sources, then redeploy. Set usdLyd to null when you have no verified figure - the app and site hide the section rather than show a number nobody has checked.",
-  "usdLyd": null,
-  "updated": "",
+  "usdLyd": 10.42,
+  "updated": "2026-11-16T03:45:00+02:00",
   "note": "",
-  "sources": 0
+  "sources": 1
 }
