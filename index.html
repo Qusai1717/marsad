@@ -1185,6 +1185,21 @@ const PARALLEL = {
 };
 
 const Parallel={
+  /* Single source of truth: the same /parallel.json the mobile app reads, so
+     the rate is published once and both surfaces pick it up. The constant
+     above is only a fallback for when the file is unreachable. */
+  async load(){
+    try{
+      const r=await fetch("/parallel.json",{cache:"no-store"});
+      if(!r.ok)return;
+      const j=await r.json();
+      const v=Number(j.usdLyd);
+      PARALLEL.usdLyd = (isFinite(v)&&v>0)?v:null;
+      PARALLEL.updated= j.updated||"";
+      PARALLEL.note   = j.note||"";
+      render("home");
+    }catch(_){/* offline: keep whatever the constant says */}
+  },
   get value(){const v=Number(PARALLEL.usdLyd);return v>0?v:null},
   get at(){const t=Date.parse(PARALLEL.updated);return isNaN(t)?null:t},
   daysOld(){const t=Parallel.at;return t==null?null:(Date.now()-t)/864e5},
@@ -1647,7 +1662,7 @@ const App={
   },1000);
   if(News.hydrate())render();      // show last good articles instantly
   await Data.init();
-  render();Home.loadHero();WB.load();News.refresh();
+  render();Home.loadHero();WB.load();News.refresh();Parallel.load();
 })();
 
 </script>
