@@ -264,7 +264,7 @@ const I18N={
   search:"بحث",settings:"الإعدادات",search_hint:"ابحث بالاسم أو الرمز أو الدولة — مثال: ليبيا",
   no_res:"لا توجد نتائج — جرّب LYD أو «دينار»",fav:"المفضلة",recent:"الأخيرة",allcur:"كل العملات",assets:"معادن وعملات رقمية",
   hero:"سعر صرف الدولار مقابل الدينار الليبي",official:"السعر الرسمي",
-  par:"السوق الموازي (تقديري)",par_est:"تقدير غير رسمي",gap:"الفارق",
+  par:"السوق الموازي",par_est:"تقدير غير رسمي",gap:"الفارق",
   par_none:"سعر السوق الموازي غير منشور حالياً. لا نعرض أرقاماً غير مؤكدة.",
   par_est:"تقدير غير رسمي",par_vs_official:"عن السعر الرسمي",par_updated:"آخر تحديث",
   par_ph:"مثال: 7.20",par_days:"قبل {n} يوم",
@@ -301,7 +301,7 @@ const I18N={
   search:"Search",settings:"Settings",search_hint:"Search name, code, or country — e.g. Libya",
   no_res:"No results — try LYD or “dinar”",fav:"Favorites",recent:"Recent",allcur:"All currencies",assets:"Metals & crypto",
   hero:"US Dollar to Libyan Dinar",official:"Official rate",
-  par:"Parallel market (estimate)",par_est:"Unofficial estimate",gap:"Difference",
+  par:"Parallel market",par_est:"Unofficial estimate",gap:"Difference",
   par_none:"The parallel-market rate isn't published right now. We don't show unverified numbers.",
   par_est:"Unofficial estimate",par_vs_official:"vs official",par_updated:"Updated",
   par_ph:"e.g. 7.20",par_days:"{n}d ago",
@@ -1216,15 +1216,13 @@ const Parallel={
         <p class="cap" style="margin-top:7px">${T("par_none")}</p></div>`;
     const gap=official?((v/official-1)*100):null;
     return`<div class="card" style="padding:15px;margin-top:14px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <b style="flex:1;font-size:13px;color:var(--ink2)">${T("par")}</b>
-        <span class="dchip" style="background:var(--amber-bg);color:var(--amber)">${T("par_est")}</span></div>
+      <b style="display:block;font-size:13px;color:var(--ink2)">${T("par")}</b>
       <div class="hero-v num" style="font-size:30px">${fmtRate(v)}</div>
       ${gap!=null?`<div class="cap" style="font-weight:700;color:var(--ink2)">
         ${T("gap")}: <span class="num">${gap>=0?"+":""}${gap.toFixed(1)}%</span> ${T("par_vs_official")}</div>`:""}
       ${Parallel.at!=null?`<div class="cap" style="margin-top:3px${Parallel.stale()?";color:var(--amber);font-weight:700":""}">
         ${T("par_updated")}: ${Parallel.when()}${Parallel.stale()?" · "+T("par_stale"):""}</div>`:""}
-      <div class="cap" style="margin-top:8px">${esc(PARALLEL.note||T("par_note"))}</div></div>`},
+      ${PARALLEL.note?`<div class="cap" style="margin-top:8px">${esc(PARALLEL.note)}</div>`:""}</div>`},
 };
 /* ═══════════ WATCHLIST (lives on Home) ═══════════ */
 const Watch={
