@@ -1,7 +1,7 @@
 {
-  "_readme": "Marsad parallel (black) market rate. Edit usdLyd, updated and sources, then redeploy. Set usdLyd to null when you have no verified figure - the app and site hide the section rather than show a number nobody has checked. NOTE: 'note' is deliberately a single space. The shipped app falls back to its built-in 'unofficial estimate' disclaimer whenever note is empty, so a space is the only way to suppress that line without an App Store release. Put real text here any time and it will show instead.",
-  "usdLyd": 10.42,
-  "updated": "2026-11-16T03:45:00+02:00",
+  "_readme": "Marsad parallel (black) market rate. Edit usdLyd, updated and sources, then redeploy. Set usdLyd to null when you have no verified figure - the app and site hide the section rather than show a number nobody has checked. usdLyd is the CASH rate (physical notes), not the cheque/sak rate, which trades at a premium. 'note' is an optional context line under the figure. It is a single space on purpose: app 2.0.1 falls back to a built-in 'unofficial estimate' disclaimer whenever note is empty, and a space is the only way to suppress that. Once 2.0.2 has rolled out to everyone this can go back to \"\" - 2.0.2 shows no line at all when note is empty.",
+  "usdLyd": 10.57,
+  "updated": "2026-11-17T05:45:00+02:00",
   "note": " ",
   "sources": 1
 }
