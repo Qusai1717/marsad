@@ -263,7 +263,7 @@ const I18N={
   t_home:"الرئيسية",t_markets:"الأسواق",t_convert:"تحويل",t_news:"الأخبار",t_watch:"المتابعة",
   search:"بحث",settings:"الإعدادات",search_hint:"ابحث بالاسم أو الرمز أو الدولة — مثال: ليبيا",
   no_res:"لا توجد نتائج — جرّب LYD أو «دينار»",fav:"المفضلة",recent:"الأخيرة",allcur:"كل العملات",assets:"معادن وعملات رقمية",
-  hero:"سعر صرف الدولار مقابل الدينار الليبي",official:"السعر الرسمي",
+  hero:"سعر صرف الدولار مقابل الدينار الليبي",par_usd_t:"السوق الموازي — الدولار مقابل الدينار الليبي",par_gold_t:"السوق الموازي — الذهب عيار 18",par_badge:"السعر الموازي",gold_unit:"دينار للغرام",official:"السعر الرسمي",
   par:"السوق الموازي",par_est:"تقدير غير رسمي",gap:"الفارق",
   par_none:"سعر السوق الموازي غير منشور حالياً. لا نعرض أرقاماً غير مؤكدة.",
   par_est:"تقدير غير رسمي",par_vs_official:"عن السعر الرسمي",par_updated:"آخر تحديث",
@@ -300,7 +300,7 @@ const I18N={
   t_home:"Home",t_markets:"Markets",t_convert:"Convert",t_news:"News",t_watch:"Watchlist",
   search:"Search",settings:"Settings",search_hint:"Search name, code, or country — e.g. Libya",
   no_res:"No results — try LYD or “dinar”",fav:"Favorites",recent:"Recent",allcur:"All currencies",assets:"Metals & crypto",
-  hero:"US Dollar to Libyan Dinar",official:"Official rate",
+  hero:"US Dollar to Libyan Dinar",par_usd_t:"Parallel Market — US Dollar to Libyan Dinar",par_gold_t:"Parallel Market — Gold 18K",par_badge:"Parallel Rate",gold_unit:"LYD per gram",official:"Official Rate",
   par:"Parallel market",par_est:"Unofficial estimate",gap:"Difference",
   par_none:"The parallel-market rate isn't published right now. We don't show unverified numbers.",
   par_est:"Unofficial estimate",par_vs_official:"vs official",par_updated:"Updated",
@@ -1145,7 +1145,7 @@ const Home={
         <div class="chips" style="margin-top:10px" onclick="event.stopPropagation()">
           ${["1M","3M","6M","1Y","5Y","MAX"].map(k=>`<button class="chip ${State.heroRange===k?"on":""}" onclick="State.heroRange='${k}';Home.loadHero()">${k}</button>`).join("")}</div>
       </div>
-      ${Parallel.card(r)}
+      ${Parallel.cards(r)}
     </div>
     <div class="hcol">
       <div class="goldcard" onclick="App.go('convert')">
@@ -1182,9 +1182,11 @@ const Home={
    ╚═══════════════════════════════════════════════════════════════════╝ */
 const PARALLEL = {
   usdLyd : null,          //  ← e.g. 7.20   (null = section hidden)
+  gold18Lyd: null,        //  ← e.g. 975    (LYD per gram, 18 karat)
   updated: "",            //  ← e.g. "2026-07-30"
   note   : "",            //  ← optional: "Tripoli street rate, midday"
   staleDays: 3,           //  after this many days the card says it may be old
+  history: [],            //  ← [{d:"2026-11-17",usd:10.57,gold18:975}, ...]
 };
 
 const Parallel={
@@ -1196,14 +1198,17 @@ const Parallel={
       const r=await fetch("/parallel.json",{cache:"no-store"});
       if(!r.ok)return;
       const j=await r.json();
-      const v=Number(j.usdLyd);
-      PARALLEL.usdLyd = (isFinite(v)&&v>0)?v:null;
-      PARALLEL.updated= j.updated||"";
-      PARALLEL.note   = j.note||"";
+      const v=Number(j.usdLyd), g=Number(j.gold18Lyd);
+      PARALLEL.usdLyd   = (isFinite(v)&&v>0)?v:null;
+      PARALLEL.gold18Lyd= (isFinite(g)&&g>0)?g:null;
+      PARALLEL.updated  = j.updated||"";
+      PARALLEL.note     = j.note||"";
+      PARALLEL.history  = Array.isArray(j.history)?j.history:[];
       render("home");
     }catch(_){/* offline: keep whatever the constant says */}
   },
   get value(){const v=Number(PARALLEL.usdLyd);return v>0?v:null},
+  get gold(){const v=Number(PARALLEL.gold18Lyd);return v>0?v:null},
   get at(){const t=Date.parse(PARALLEL.updated);return isNaN(t)?null:t},
   daysOld(){const t=Parallel.at;return t==null?null:(Date.now()-t)/864e5},
   when(){const d=Parallel.daysOld();
@@ -1211,21 +1216,60 @@ const Parallel={
     if(d<1)return T("par_today");
     return T("par_days",{n:Math.round(d)})},
   stale(){const d=Parallel.daysOld();return d!=null&&d>PARALLEL.staleDays},
-  card(official){
+
+  /* History is hand-published, so a day with no reading is simply absent —
+     we plot the readings we have rather than inventing the gaps. */
+  series(key){
+    const h=(PARALLEL.history||[]).filter(r=>r&&r.d&&Number(r[key])>0)
+                                  .sort((a,b)=>a.d<b.d?-1:1);
+    return {dates:h.map(r=>r.d), values:h.map(r=>Number(r[key]))};
+  },
+  /* % change across the last `n`+1 readings. Null unless we actually have
+     that many — never extrapolated from a shorter run. */
+  delta(key,n){
+    const v=Parallel.series(key).values;
+    if(v.length<n+1)return null;
+    const a=v[v.length-1-n],b=v[v.length-1];
+    return a>0?(b/a-1)*100:null;
+  },
+
+  heroCard({title,value,fmt,key,extra}){
+    if(value==null)return"";
+    const s=Parallel.series(key);
+    return`<div class="card hero" style="padding:18px;margin-top:14px">
+      <div class="hero-t">${title}</div>
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span class="hero-v num">${fmt(value)}</span>
+        <span class="cap" style="font-weight:800;color:var(--gold-dark)">${T("par_badge")}</span></div>
+      ${extra||""}
+      ${Parallel.at!=null?`<div class="cap" style="margin-top:3px${Parallel.stale()?";color:var(--amber);font-weight:700":""}">
+        ${T("par_updated")}: ${Parallel.when()}${Parallel.stale()?" · "+T("par_stale"):""}</div>`:""}
+      <div class="mv3">
+        <div><div class="k">${T("d1")}</div>${dchip(Parallel.delta(key,1))}</div>
+        <div><div class="k">${T("w1")}</div>${dchip(Parallel.delta(key,5))}</div>
+        <div><div class="k">${T("m1")}</div>${dchip(Parallel.delta(key,21))}</div></div>
+      ${s.values.length>1?`<div style="margin-top:12px">${heroChart(s)}</div>`:""}
+      ${PARALLEL.note?`<div class="cap" style="margin-top:8px">${esc(PARALLEL.note)}</div>`:""}
+    </div>`},
+
+  cards(official){
     const v=Parallel.value;
-    if(v==null)
+    if(v==null&&Parallel.gold==null)
       return`<div class="card" style="padding:15px;margin-top:14px">
         <b style="font-size:13px;color:var(--ink2)">${T("par")}</b>
         <p class="cap" style="margin-top:7px">${T("par_none")}</p></div>`;
-    const gap=official?((v/official-1)*100):null;
-    return`<div class="card" style="padding:15px;margin-top:14px">
-      <b style="display:block;font-size:13px;color:var(--ink2)">${T("par")}</b>
-      <div class="hero-v num" style="font-size:30px">${fmtRate(v)}</div>
-      ${gap!=null?`<div class="cap" style="font-weight:700;color:var(--ink2)">
-        ${T("gap")}: <span class="num">${gap>=0?"+":""}${gap.toFixed(1)}%</span> ${T("par_vs_official")}</div>`:""}
-      ${Parallel.at!=null?`<div class="cap" style="margin-top:3px${Parallel.stale()?";color:var(--amber);font-weight:700":""}">
-        ${T("par_updated")}: ${Parallel.when()}${Parallel.stale()?" · "+T("par_stale"):""}</div>`:""}
-      ${PARALLEL.note?`<div class="cap" style="margin-top:8px">${esc(PARALLEL.note)}</div>`:""}</div>`},
+    const gap=(v!=null&&official)?((v/official-1)*100):null;
+    return Parallel.heroCard({
+        title:T("par_usd_t"), value:v, fmt:fmtRate, key:"usd",
+        extra:gap!=null?`<div class="cap" style="font-weight:700;color:var(--ink2)">
+          ${T("gap")}: <span class="num">${gap>=0?"+":""}${gap.toFixed(1)}%</span> ${T("par_vs_official")}</div>`:""
+      })
+      + Parallel.heroCard({
+        title:T("par_gold_t"), value:Parallel.gold,
+        fmt:x=>x.toLocaleString(undefined,{maximumFractionDigits:2}), key:"gold18",
+        extra:`<div class="cap" style="font-weight:700;color:var(--ink2)">${T("gold_unit")}</div>`
+      });
+  },
 };
 /* ═══════════ WATCHLIST (lives on Home) ═══════════ */
 const Watch={

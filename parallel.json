@@ -1,7 +1,20 @@
 {
-  "_readme": "Marsad parallel (black) market rate. Edit usdLyd, updated and sources, then redeploy. Set usdLyd to null when you have no verified figure - the app and site hide the section rather than show a number nobody has checked. usdLyd is the CASH rate (physical notes), not the cheque/sak rate, which trades at a premium. 'note' is an optional context line under the figure. It is a single space on purpose: app 2.0.1 falls back to a built-in 'unofficial estimate' disclaimer whenever note is empty, and a space is the only way to suppress that. Once 2.0.2 has rolled out to everyone this can go back to \"\" - 2.0.2 shows no line at all when note is empty.",
+  "_readme": "Marsad parallel (black) market rate, published once and read by both the website and the app. usdLyd is the CASH rate (physical notes) - not the cheque/sak rate, which trades at a premium. gold18Lyd is LYD per gram of 18-karat gold. 'history' drives the charts: one entry per day you record, missing days are simply absent rather than interpolated. Use tools/parse_sayl.py to turn text copied off the source page into history entries. Set usdLyd to null when you have no verified figure - both surfaces hide the section rather than show a number nobody has checked. 'note' is an optional context line; it is a single space on purpose because app 2.0.1 falls back to a built-in disclaimer when note is empty. Once 2.0.2 has rolled out everywhere this can go back to \"\".",
   "usdLyd": 10.57,
+  "gold18Lyd": 975,
   "updated": "2026-11-17T05:45:00+02:00",
   "note": " ",
-  "sources": 1
+  "sources": 1,
+  "history": [
+    {
+      "d": "2026-11-16",
+      "usd": 10.42,
+      "gold18": 960
+    },
+    {
+      "d": "2026-11-17",
+      "usd": 10.57,
+      "gold18": 975
+    }
+  ]
 }
