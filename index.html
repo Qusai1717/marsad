@@ -337,7 +337,7 @@ const T=(k,args)=>{let s=(I18N[State.lang]||I18N.ar)[k]??I18N.en[k]??k;
 const isAr=()=>State.lang==="ar";
 const State={
   lang:"ar",theme:"light",onboarded:false,tab:"home",
-  pair:["USD","LYD"],range:"1Y",compare:false,heroRange:"1M",
+  pair:["USD","LYD"],range:"1Y",parRange:"MAX",compare:false,heroRange:"1M",
   watchlist:[["USD","LYD"],["EUR","LYD"],["XAU","USD"],["BTC","USD"]],
   favs:["LYD","USD","EUR","XAU","BTC"],recents:[],bookmarks:[],alerts:[],convRecents:[],
   home:"LYD",newsCat:null,watchTab:0,
@@ -1236,7 +1236,8 @@ const Parallel={
   heroCard({title,value,fmt,key,extra}){
     if(value==null)return"";
     const s=Parallel.series(key);
-    return`<div class="card hero" style="padding:18px;margin-top:14px">
+    return`<div class="card hero" style="padding:18px;margin-top:14px;cursor:pointer"
+         onclick="Detail.openPar('${key}')">
       <div class="hero-t">${title}</div>
       <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
         <span class="hero-v num">${fmt(value)}</span>
@@ -1523,7 +1524,7 @@ const WB={
 };
 /* ═══════════ DETAIL page ═══════════ */
 const Detail={
-  built:false,series:null,cmp:[],
+  built:false,series:null,cmp:[],par:null,
   ensure(){if(Detail.built)return;Detail.built=true;
     $("scr-detail").innerHTML=`<div class="wrap" style="padding-bottom:40px">
       <div class="hdr-in">
@@ -1548,7 +1549,44 @@ const Detail={
       <div id="d-events" style="margin-top:16px"></div>
     </div>`;
     Chart.init();},
-  open(a,b){Detail.ensure();State.pair=[a,b];Detail.cmp=[];State.compare=false;
+  /* Parallel-market detail. Same screen as a normal pair, but driven by the
+     hand-published history in parallel.json rather than a rates provider —
+     so no favourite star, no compare, and no event markers. */
+  openPar(key){Detail.ensure();Detail.par=key;Detail.cmp=[];State.compare=false;
+    $("scr-detail").classList.add("on");Detail.paint();Detail.load();
+    requestAnimationFrame(()=>Chart.resize());},
+  parFmt(v){return Detail.par==="gold18"
+    ? v.toLocaleString(undefined,{maximumFractionDigits:2}) : fmtRate(v)},
+  parSeries(){
+    const all=Parallel.series(Detail.par);
+    const days={"1M":31,"3M":92,"6M":183,"1Y":366,"MAX":null}[State.parRange];
+    if(days==null)return all;
+    const cut=isoAdd(all.dates[all.dates.length-1]||"2026-01-01",-days);
+    const keep=all.dates.map((d,i)=>[d,all.values[i]]).filter(([d])=>d>=cut);
+    return {dates:keep.map(x=>x[0]), values:keep.map(x=>x[1])};},
+  paintPar(){
+    const key=Detail.par,v=key==="gold18"?Parallel.gold:Parallel.value;
+    $("d-title").textContent=T(key==="gold18"?"par_gold_t":"par_usd_t");
+    $("d-star").style.display="none";
+    if(v!=null)animNum($("d-rate"),v,Detail.parFmt);else $("d-rate").textContent="—";
+    $("d-chip").innerHTML=dchip(Parallel.delta(key,1));
+    $("d-attr").textContent=[T("par_badge"),
+      key==="gold18"?T("gold_unit"):null,
+      Parallel.at!=null?T("par_updated")+": "+Parallel.when():null].filter(Boolean).join(" · ");
+    $("d-ranges").innerHTML=["1M","3M","6M","1Y","MAX"].map(k=>`<button class="chip ${State.parRange===k?"on":""}"
+      onclick="State.parRange='${k}';Detail.paint();Detail.load()">${k}</button>`).join("");
+    $("d-cmp").innerHTML="";$("d-cmpstats").innerHTML="";$("d-events").innerHTML="";},
+  loadPar(){
+    const s=Detail.parSeries();Detail.series=s;
+    const no=!s.dates.length;
+    $("nohist").classList.toggle("on",no);
+    if(no){$("nh-t").textContent=T("no_hist");$("nohist-b").textContent="";
+      $("nh-r").textContent=T("retry");Chart.set([],[],{});}
+    else Chart.set(s.dates,s.values,{label:T(Detail.par==="gold18"?"par_gold_t":"par_usd_t")});
+    $("chart-note").textContent="";
+    Detail.stats();},
+  open(a,b){Detail.ensure();Detail.par=null;$("d-star").style.display="";
+    State.pair=[a,b];Detail.cmp=[];State.compare=false;
     $("scr-detail").classList.add("on");Detail.paint();Detail.load();
     requestAnimationFrame(()=>Chart.resize());},
   close(){$("scr-detail").classList.remove("on")},
@@ -1556,7 +1594,8 @@ const Detail={
     const i=State.watchlist.findIndex(p=>p[0]===a&&p[1]===b);
     i>=0?State.watchlist.splice(i,1):State.watchlist.push([a,b]);
     Store.save();toast(T(i>=0?"removed":"added"));Detail.paint();render("home")},
-  paint(){const[a,b]=State.pair,r=Data.rate(a,b),d=Data.dayDelta(a,b);
+  paint(){if(Detail.par)return Detail.paintPar();
+    const[a,b]=State.pair,r=Data.rate(a,b),d=Data.dayDelta(a,b);
     $("d-title").textContent=`${metaOf(a).f} ${a} / ${b} ${metaOf(b).f}`;
     const fav=State.watchlist.some(p=>p[0]===a&&p[1]===b);
     $("d-star").innerHTML=fav?IC.starF:IC.star;
@@ -1567,7 +1606,8 @@ const Detail={
     $("d-ranges").innerHTML=RANGES.map(([k])=>`<button class="chip ${State.range===k?"on":""}"
       onclick="State.range='${k}';Detail.paint();Detail.load()">${k}</button>`).join("");
     Detail.paintCmp();},
-  async load(){const[a,b]=State.pair;
+  async load(){if(Detail.par)return Detail.loadPar();
+    const[a,b]=State.pair;
     $("chart-note").textContent=T("loading");
     const s=await Data.series(a,b,rangeStart(State.range));
     if(State.pair[0]!==a||State.pair[1]!==b)return;
@@ -1588,9 +1628,10 @@ const Detail={
     const v=s.values,hi=Math.max(...v),lo=Math.min(...v),ch=(v[v.length-1]/v[0]-1)*100;
     const tile=(k,val,cls)=>`<div class="tile" style="min-width:160px"><div class="k">${k}</div>
       <div class="v ${cls||""}">${val}</div></div>`;
-    $("d-stats").innerHTML=tile(`${T("hi")} (${State.range})`,fmtRate(hi))
-      +tile(`${T("lo")} (${State.range})`,fmtRate(lo))
-      +tile(`${T("chg")} (${State.range})`,pctS(ch),ch>=0?"up":"dn")
+    const rng=Detail.par?State.parRange:State.range,f=Detail.par?Detail.parFmt:fmtRate;
+    $("d-stats").innerHTML=tile(`${T("hi")} (${rng})`,f(hi))
+      +tile(`${T("lo")} (${rng})`,f(lo))
+      +tile(`${T("chg")} (${rng})`,pctS(ch),ch>=0?"up":"dn")
       +tile(T("pts"),v.length);},
   events(){const[a,b]=State.pair,s=Detail.series;
     if(!s||!s.dates.length){$("d-events").innerHTML="";return}
