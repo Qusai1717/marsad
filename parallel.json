@@ -1,4 +1,4 @@
-{"_readme":"Marsad parallel (black) market rate, published once and read by both the website and the app. usdLyd is the CASH rate (physical notes) - not the cheque/sak rate, which trades at a premium. gold18Lyd is LYD per gram of 18-karat gold. 'history' drives the charts: one entry per day recorded, taken from the last post of that day; days with no post are absent rather than interpolated. Regenerate with tools/parse_sayl.py from text copied off the source page. Set usdLyd to null when you have no verified figure - both surfaces hide the section rather than show a number nobody has checked. 'note' is a single space on purpose: app 2.0.1 falls back to a built-in disclaimer when note is empty. Once 2.0.2 has rolled out everywhere this can go back to \"\".","usdLyd":11.27,"gold18Lyd":950.0,"updated":"2026-11-25T05:40:00+02:00","note":" ","sources":1,"history":[{"d":"2026-01-01","usd":8.65,"gold18":873.0},
+{"_readme":"Marsad parallel (black) market rate, published once and read by both the website and the app. usdLyd is the CASH rate (physical notes) - not the cheque/sak rate, which trades at a premium. gold18Lyd is LYD per gram of 18-karat gold. 'history' drives the charts: one entry per day recorded, taken from the last post of that day; days with no post are absent rather than interpolated. Regenerate with tools/parse_sayl.py from text copied off the source page. Set usdLyd to null when you have no verified figure - both surfaces hide the section rather than show a number nobody has checked. 'note' is a single space on purpose: app 2.0.1 falls back to a built-in disclaimer when note is empty. Once 2.0.2 has rolled out everywhere this can go back to \"\".","usdLyd":10.95,"gold18Lyd":945.0,"updated":"2026-11-26T04:25:00+02:00","note":" ","sources":1,"history":[{"d":"2026-01-01","usd":8.65,"gold18":873.0},
 {"d":"2026-01-03","usd":8.7,"gold18":885.0},
 {"d":"2026-01-05","usd":8.72,"gold18":890.0},
 {"d":"2026-01-06","usd":8.83,"gold18":925.0},
@@ -210,4 +210,5 @@
 {"d":"2026-11-21","usd":10.77,"gold18":910.0},
 {"d":"2026-11-23","usd":11.03,"gold18":940.0},
 {"d":"2026-11-24","usd":11.18,"gold18":970.0},
-{"d":"2026-11-25","usd":11.27,"gold18":950.0}]}
+{"d":"2026-11-25","usd":11.27,"gold18":950.0},
+{"d":"2026-11-26","usd":10.95,"gold18":945.0}]}
